@@ -212,14 +212,17 @@ function fromFile(file, options = {}) {
 
 }
 
-function fromStream(stream, canvas_id, options = {}, connectDestination=true) {
+function fromStream(stream, canvas_id, options = {}, connectDestination=true, audioContext=null) {
 
     this.current_stream.id = canvas_id;
     this.current_stream.options = options;
 
     let audioCtx, analyser, source;
     if (!this.sources[stream.toString()]) {
-        audioCtx = new AudioContext();
+        if(audioContext)
+            audioCtx = audioContext;
+        else
+            audioCtx = new AudioContext();
         analyser = audioCtx.createAnalyser();
 
         source = audioCtx.createMediaStreamSource(stream);
